@@ -1,0 +1,307 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[UTF8]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{adjustbox}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsmath,amsfonts,amssymb,bm,amsthm}%数学宏包、数学字体、数学符号、支持 \mathscr{} 字体、支持粗斜体 \bm{}、数学定理
+\usepackage{bigstrut,multirow,rotating}%Excel表格自动导入latex
+\usepackage{booktabs}
+\usepackage{breqn}
+\usepackage{caption}
+\usepackage{color}%支持颜色改变
+\usepackage{ctex}
+\usepackage{enumitem}%自定义列表环境
+\usepackage{esint}%支持多种积分算子
+\usepackage{extarrows}%任意长度的箭头
+\usepackage{fancyhdr}
+\usepackage{fontsize}
+\usepackage{fontspec}
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry}
+\usepackage{graphicx}%支持 \includegraphics{} 插图
+\usepackage{mathrsfs}
+\usepackage{mathtools}%数学宏包的重要补充
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{nicefrac}
+\usepackage{scribe}
+\usepackage{subfigure}%插入子图
+\usepackage{tikz,xcolor}%画图、画 Feynman 图
+\usepackage{upgreek}%数学环境的直立希腊字母
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%~~~~~~~~~~~~~~~
+% Utility latin
+%~~~~~~~~~~~~~~~
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\newcommand{\balign}[1]{\ealign{\begin{align}#1\end{align}}}
+\newcommand{\baligns}[1]{\ealigns{\begin{align*}#1\end{align*}}}
+\newcommand{\bitemize}[1]{\eitemize{\begin{itemize}#1\end{itemize}}}
+\newcommand{\benumerate}[1]{\eenumerate{\begin{enumerate}#1\end{enumerate}}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad}
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbi}[1]{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\tsc}[1]{\textsc{#1}}
+%\def\<{{\langle}}
+%\def\>{{\rangle}}
+\newcommand{\sT}{\sf T}
+\newcommand{\grad}{\nabla}
+\newcommand{\Proj}{\Pi}
+%~~~~~~~~~~~~~~~
+% Common sets 定义数集符号
+%~~~~~~~~~~~~~~~
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}} % Real number symbol
+\newcommand{\integers}{\mathbb{Z}} % Integer symbol
+\newcommand{\rationals}{\mathbb{Q}} % Rational numbers
+\newcommand{\naturals}{\mathbb{N}} % Natural numbers
+\newcommand{\complex}{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\newcommand{\indic}[1]{\mbb{I}\left(#1\right)} % Indicator function
+\newcommand{\indicsub}[2]{\mbb{I}_{#2}\left(#1\right)} % Indicator function
+\newcommand{\argmax}{\mathop\mathrm{arg\, max}} % Defining math symbols
+\newcommand{\argmin}{\mathop\mathrm{arg\, min}}
+\renewcommand{\arccos}{\mathop\mathrm{arccos}}
+\newcommand{\dom}{\mathop\mathrm{dom}} % Domain
+\newcommand{\range}{\mathop\mathrm{range}} % Range
+\newcommand{\diag}{\mathop\mathrm{diag}}
+\newcommand{\tr}{\mathop\mathrm{tr}}
+\newcommand{\abs}{\mathop\mathrm{abs}}
+\newcommand{\card}{\mathop\mathrm{card}}
+\newcommand{\sign}{\mathop\mathrm{sign}}
+\newcommand{\prox}{\mathrm{prox}} % prox
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\newcommand{\E}{\mathbb{E}} % Expectation symbol
+\newcommand{\Earg}[1]{\E\left[#1\right]}
+\newcommand{\Esubarg}[2]{\E_{#1}\left[#2\right]}
+\renewcommand{\P}{\mathbb{P}} % Probability symbol
+\newcommand{\Parg}[1]{\P\left(#1\right)}
+\newcommand{\Psubarg}[2]{\P_{#1}\left[#2\right]}
+%\newcommand{\Cov}{\mrm{Cov}} % Covariance symbol
+%\newcommand{\Covarg}[1]{\Cov\left[#1\right]}
+%\newcommand{\Covsubarg}[2]{\Cov_{#1}\left[#2\right]}
+%\newcommand{\model}{\mathcal{P}} % probability family / statistical model
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+%\newcommand{\Gsn}{\mathcal{N}}
+%\newcommand{\Ber}{\textnormal{Ber}}
+%\newcommand{\Bin}{\textnormal{Bin}}
+%\newcommand{\Unif}{\textnormal{Unif}}
+%\newcommand{\Mult}{\textnormal{Mult}}
+%\newcommand{\NegMult}{\textnormal{NegMult}}
+%\newcommand{\Dir}{\textnormal{Dir}}
+%\newcommand{\Bet}{\textnormal{Beta}}
+%\newcommand{\Gam}{\textnormal{Gamma}}
+%\newcommand{\Poi}{\textnormal{Poi}}
+%\newcommand{\HypGeo}{\textnormal{HypGeo}}
+%\newcommand{\GEM}{\textnormal{GEM}}
+%\newcommand{\BP}{\textnormal{BP}}
+%\newcommand{\DP}{\textnormal{DP}}
+%\newcommand{\BeP}{\textnormal{BeP}}
+%\newcommand{\Exp}{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
+%\newtheorem{problem}{Problem}
+%\newtheorem{lemma}{Lemma}
+%~~~~~~~~~~~~~~~
+% 组合数学的模板和作业里用到的一些宏包和自定义命令
+%~~~~~~~~~~~~~~~
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+\newcommand{\falfac}[1]{^{\underline{#1}}}
+\newcommand{\binomfrac}[2]{\frac{#1^{\underline{#2}}}{#2!}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\suminfty}[2]{\sum_{#1=#2}^{\infty}}
+\newcommand{\suminftyk}[0]{\sum_{k=0}^{\infty}}
+\newcommand{\sumint}[3]{\sum_{#1=#2}^{#3}}
+\newcommand{\sumintk}[2]{\sum_{k=#1}^{#2}}
+\newcommand{\suminti}[2]{\sum_{i=#1}^{#2}}
+%~~~~~~~~~~~~~~~
+% 定义新命令
+%~~~~~~~~~~~~~~~
+\newcommand{\unit}[1]{\,\mathrm{#1}}%用来输出物理量
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}%微分算子 d
+\newcommand{\pdif}{\mathop{}\!\partial}%偏微分算子
+\newcommand{\cdif}{\mathop{}\!\nabla}%协变导数、nabla 算子
+\newcommand{\laplace}{\mathop{}\!\Delta}%laplace 算子
+\newcommand{\deriv}[3]{\frac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand{\me}[1]{\mathrm{e}^{#1}}%e 指数
+\newcommand{\mi}{\mathrm{i}}%虚数单位
+%\newcommand{\mc}{\mathrm{c}}%光速 定义与mathcal冲突
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+%\newcommand{\Rome}[1]{\setcounter{rome}{#1}\Roman{rome}}
+%~~~~~~~~~~~~~~~
+% 本.tex文档中特殊定义命令
+%~~~~~~~~~~~~~~~
+\newcommand{\cdclass}[2]{[#1]_{\text{#2}}}
+%~~~~~~~~~~~~~~~
+% 一些数学的环境设置
+%~~~~~~~~~~~~~~~
+%\newcounter{counter_exm}\setcounter{counter_exm}{1}
+%\newcounter{counter_prb}\setcounter{counter_prb}{1}
+%\newcounter{counter_thm}\setcounter{counter_thm}{1}
+%\newcounter{counter_lma}\setcounter{counter_lma}{1}
+%\newcounter{counter_dft}\setcounter{counter_dft}{1}
+%\newcounter{counter_clm}\setcounter{counter_clm}{1}
+%\newcounter{counter_cly}\setcounter{counter_cly}{1}
+%\newtheorem{theorem}{{\hskip 1.7em \bf 定理}}
+%\newtheorem{lemma}[theorem]{\hskip 1.7em 引理}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{claim}[theorem]{\hskip 1.7em 命题}
+%\newtheorem{corollary}[theorem]{\hskip 1.7em 推论}
+%\newtheorem{definition}[theorem]{\hskip 1.7em 定义}
+\newcommand{\problem}[1]{{\setlength{\parskip}{10pt}\noindent \bf{#1}}}
+\newenvironment{solution}{{\noindent\hskip 2em \bf 解 \quad}}{}
+\renewenvironment{proof}{{\setlength{\parskip}{7pt}\noindent\hskip 2em \bf 证明 \quad}}{\hfill$\qed$\par}
+%\newenvironment{example}{{\noindent\hskip 2em \bf 例 \arabic{counter_exm}\quad}}{\addtocounter{counter_exm}{1}\par}
+%\newenvironment{concept}[1]{{\bf #1\quad} \begin{kaishu}} {\end{kaishu}\par}
+
+% ----------------------------------------------------------------------
+% Header information
+% ------------------------------------------------------------------------
+
+\begin{document}
+
+\course{B0911006Y-01} 			%optional
+\coursetitle{Computer Organization and Design}	%optional
+\semester{2023 Spring}		%optional
+\lecturer{Ke Zhang}	%optional
+\scribe{吉骏雄}		%required
+\lecturenumber{4}			%required (must be a number)
+\lecturedate{March 22}	%required (omit year)
+
+\maketitle
+
+% ----------------------------------------------------------------------
+% Body of the document
+% ------------------------------------------------------------------------
+
+
+\textbf{课后习题：6.17,6.19}
+
+\problem{6.17} 设机器数字长为8位 (包括一位符号位), 对下列各机器数进行算术左移一位、两位, 算术右移一位、两位, 讨论结果是否正确.
+
+$[x_1]_{\text{原}} = 0.001 1010$;  $[x_2]_{\text{原}} = 1.110 1000$;  $[x_3]_{\text{原}} = 1.001 1001$; 
+
+$[y_1]_{\text{补}} = 0.101 0100$;  $[y_2]_{\text{补}} = 1.110 1000$;  $[y_3]_{\text{补}} = 1.001 1001$; 
+
+$[z_1]_{\text{反}} = 1.010 1111$;  $[z_2]_{\text{反}} = 1.110 1000$;  $[z_3]_{\text{反}} = 1.001 1001$.
+
+(为了区分不同数字, 我给题目补上了下标)
+
+\begin{solution}
+
+    \noindent
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+        \hline
+        原数字 & 左移一位 & 状态 & 左移两位 & 状态 & 右移一位 & 状态 & 右移两位 & 状态 \\
+        \hline
+        $[x_1]_{\text{原}} = 0.001 1010$ & $0.011 0100$ & 正确 & $0.110 1000$ & 正确 & $0.000 1101$ & 正确 & $0.000 0110$ & 损失精度 \\
+        \hline
+        $[x_2]_{\text{原}} = 1.110 1000$ & $1.101 0000$ & 溢出 & $1.010 0000$ & 溢出 & $1.011 0100$ & 正确 & $1.001 1010$ & 正确 \\
+        \hline
+        $[x_3]_{\text{原}} = 1.001 1001$ & $1.011 0010$ & 正确 & $1.110 0100$ & 正确 & $1.000 1100$ & 损失精度 & $1.000 0110$ & 损失精度 \\
+        \hline
+        $[y_1]_{\text{补}} = 0.101 0100$ & $0.010 1000$ & 溢出 & $0.101 0000$ & 溢出 & $0.010 1010$ & 正确 & $0.001 0101$ & 正确 \\
+        \hline
+        $[y_2]_{\text{补}} = 1.110 1000$ & $1.101 0000$ & 正确 & $1.010 0000$ & 正确 & $1.111 0100$ & 正确 & $1.111 1010$ & 正确 \\
+        \hline
+        $[y_3]_{\text{补}} = 1.001 1001$ & $1.011 0010$ & 溢出 & $1.110 0100$ & 溢出 & $1.100 1100$ & 损失精度 & $1.110 0110$ & 损失精度 \\
+        \hline
+        $[z_1]_{\text{反}} = 1.010 1111$ & $1.101 1111$ & 溢出 & $1.011 1111$ & 溢出 & $1.101 0111$ & 正确 & $1.110 1011$ & 正确 \\
+        \hline
+        $[z_2]_{\text{反}} = 1.110 1000$ & $1.101 0001$ & 正确 & $1.010 0011$ & 正确 & $1.111 0100$ & 损失精度 & $1.111 1010$ & 损失精度 \\
+        \hline
+        $[z_3]_{\text{反}} = 1.001 1001$ & $1.011 0011$ & 溢出 & $1.110 0111$ & 溢出 & $1.100 1100$ & 正确 & $1.110 0110$ & 损失精度 \\
+        \hline
+    \end{tabular}
+\end{solution}
+    
+
+
+
+\problem{6.19} 设机器数字长为8位 (含1位符号位), 用补码运算规则计算下列各题.
+\begin{enumerate}
+    \item A=9/64, B=-13/32, 求A+B; 
+    \item A=19/32, B=-17/128, 求A-B; 
+    \item A=-3/16, B=9/32, 求A+B; 
+    \item A=-87, B=53, 求A-B; 
+    \item A=115, B=-24, 求A+B.
+\end{enumerate}
+
+\begin{solution}
+    \begin{enumerate}
+        \item A=9/64, B=-13/32, 求A+B; 
+        
+        $\cdclass{A}{补} = 0.001 0010$, $\cdclass{B}{原} = 1.011 0100$, $\cdclass{B}{补} = 1.10011$. $A+B = (0.001 0010 + 1.100 1100) = 1.101 1110 = -\frac{17}{64}$.
+
+        \item A=19/32, B=-17/128, 求A-B; 
+        
+        $\cdclass{A}{补} = 0.100 1100$, $\cdclass{B}{原} = 1.001 0001$, $\cdclass{B}{补} = 1.110 1111$. $A-B = (0.100 1100 + 0.001 0001) = 0.101 1101 = \frac{93}{128}$
+
+        \item A=-3/16, B=9/32, 求A+B; 
+        
+        $\cdclass{A}{原} = 1.001 1000$, $\cdclass{A}{补} = 1.110 1000$, $\cdclass{B}{补} = 0.010 0100$. $A+B = (1.1101000 + 0.0100100) = 0.000 1100 = \frac{3}{32}$.
+
+        \item A=-87, B=53, 求A-B; 
+        
+        $\cdclass{A}{原} = 1,101 0111$, $\cdclass{A}{补} = 1,0101001$, $\cdclass{B}{补} = 0,011 0101$. $A-B = (1,010 1001 + 1,100 1011) = 0,111 0100 = 116$, 结果溢出, 其实应当是$116-256=-140$.
+
+        \item A=115, B=-24, 求A+B.
+        
+        $\cdclass{A}{补} = 0,111 0011$, $\cdclass{B}{原} = 1,001 1000$, $\cdclass{B}{补} = 1,110 1000$. $A+B = (01110011 + 11101000) = 0,101 1011 = 91$.
+
+    \end{enumerate}
+\end{solution}
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

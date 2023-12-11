@@ -1,0 +1,280 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[UTF8]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{adjustbox}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsmath,amsfonts,amssymb,bm,amsthm}%数学宏包、数学字体、数学符号、支持 \mathscr{} 字体、支持粗斜体 \bm{}、数学定理
+\usepackage{bigstrut,multirow,rotating}%Excel表格自动导入latex
+\usepackage{booktabs}
+\usepackage{breqn}
+\usepackage{caption}
+\usepackage{color}%支持颜色改变
+\usepackage{ctex}
+\usepackage{enumitem}%自定义列表环境
+\usepackage{esint}%支持多种积分算子
+\usepackage{extarrows}%任意长度的箭头
+\usepackage{fancyhdr}
+\usepackage{fontsize}
+\usepackage{fontspec}
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry}
+\usepackage{graphicx}%支持 \includegraphics{} 插图
+\usepackage{mathrsfs}
+\usepackage{mathtools}%数学宏包的重要补充
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{nicefrac}
+\usepackage{scribe}
+\usepackage{subfigure}%插入子图
+\usepackage{tikz,xcolor}%画图、画 Feynman 图
+\usepackage{upgreek}%数学环境的直立希腊字母
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%~~~~~~~~~~~~~~~
+% Utility latin
+%~~~~~~~~~~~~~~~
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\newcommand{\balign}[1]{\ealign{\begin{align}#1\end{align}}}
+\newcommand{\baligns}[1]{\ealigns{\begin{align*}#1\end{align*}}}
+\newcommand{\bitemize}[1]{\eitemize{\begin{itemize}#1\end{itemize}}}
+\newcommand{\benumerate}[1]{\eenumerate{\begin{enumerate}#1\end{enumerate}}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad}
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbi}[1]{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\tsc}[1]{\textsc{#1}}
+%\def\<{{\langle}}
+%\def\>{{\rangle}}
+\newcommand{\sT}{\sf T}
+\newcommand{\grad}{\nabla}
+\newcommand{\Proj}{\Pi}
+%~~~~~~~~~~~~~~~
+% Common sets 定义数集符号
+%~~~~~~~~~~~~~~~
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}} % Real number symbol
+\newcommand{\integers}{\mathbb{Z}} % Integer symbol
+\newcommand{\rationals}{\mathbb{Q}} % Rational numbers
+\newcommand{\naturals}{\mathbb{N}} % Natural numbers
+\newcommand{\complex}{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\newcommand{\indic}[1]{\mbb{I}\left(#1\right)} % Indicator function
+\newcommand{\indicsub}[2]{\mbb{I}_{#2}\left(#1\right)} % Indicator function
+\newcommand{\argmax}{\mathop\mathrm{arg\, max}} % Defining math symbols
+\newcommand{\argmin}{\mathop\mathrm{arg\, min}}
+\renewcommand{\arccos}{\mathop\mathrm{arccos}}
+\newcommand{\dom}{\mathop\mathrm{dom}} % Domain
+\newcommand{\range}{\mathop\mathrm{range}} % Range
+\newcommand{\diag}{\mathop\mathrm{diag}}
+\newcommand{\tr}{\mathop\mathrm{tr}}
+\newcommand{\abs}{\mathop\mathrm{abs}}
+\newcommand{\card}{\mathop\mathrm{card}}
+\newcommand{\sign}{\mathop\mathrm{sign}}
+\newcommand{\prox}{\mathrm{prox}} % prox
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\newcommand{\E}{\mathbb{E}} % Expectation symbol
+\newcommand{\Earg}[1]{\E\left[#1\right]}
+\newcommand{\Esubarg}[2]{\E_{#1}\left[#2\right]}
+\renewcommand{\P}{\mathbb{P}} % Probability symbol
+\newcommand{\Parg}[1]{\P\left(#1\right)}
+\newcommand{\Psubarg}[2]{\P_{#1}\left[#2\right]}
+%\newcommand{\Cov}{\mrm{Cov}} % Covariance symbol
+%\newcommand{\Covarg}[1]{\Cov\left[#1\right]}
+%\newcommand{\Covsubarg}[2]{\Cov_{#1}\left[#2\right]}
+%\newcommand{\model}{\mathcal{P}} % probability family / statistical model
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+%\newcommand{\Gsn}{\mathcal{N}}
+%\newcommand{\Ber}{\textnormal{Ber}}
+%\newcommand{\Bin}{\textnormal{Bin}}
+%\newcommand{\Unif}{\textnormal{Unif}}
+%\newcommand{\Mult}{\textnormal{Mult}}
+%\newcommand{\NegMult}{\textnormal{NegMult}}
+%\newcommand{\Dir}{\textnormal{Dir}}
+%\newcommand{\Bet}{\textnormal{Beta}}
+%\newcommand{\Gam}{\textnormal{Gamma}}
+%\newcommand{\Poi}{\textnormal{Poi}}
+%\newcommand{\HypGeo}{\textnormal{HypGeo}}
+%\newcommand{\GEM}{\textnormal{GEM}}
+%\newcommand{\BP}{\textnormal{BP}}
+%\newcommand{\DP}{\textnormal{DP}}
+%\newcommand{\BeP}{\textnormal{BeP}}
+%\newcommand{\Exp}{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
+%\newtheorem{problem}{Problem}
+%\newtheorem{lemma}{Lemma}
+%~~~~~~~~~~~~~~~
+% 组合数学的模板和作业里用到的一些宏包和自定义命令
+%~~~~~~~~~~~~~~~
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+\newcommand{\falfac}[1]{^{\underline{#1}}}
+\newcommand{\binomfrac}[2]{\frac{#1^{\underline{#2}}}{#2!}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\suminfty}[2]{\sum_{#1=#2}^{\infty}}
+\newcommand{\suminftyk}[0]{\sum_{k=0}^{\infty}}
+\newcommand{\sumint}[3]{\sum_{#1=#2}^{#3}}
+\newcommand{\sumintk}[2]{\sum_{k=#1}^{#2}}
+\newcommand{\suminti}[2]{\sum_{i=#1}^{#2}}
+%~~~~~~~~~~~~~~~
+% 定义新命令
+%~~~~~~~~~~~~~~~
+\newcommand{\unit}[1]{\,\mathrm{#1}}%用来输出物理量
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}%微分算子 d
+\newcommand{\pdif}{\mathop{}\!\partial}%偏微分算子
+\newcommand{\cdif}{\mathop{}\!\nabla}%协变导数、nabla 算子
+\newcommand{\laplace}{\mathop{}\!\Delta}%laplace 算子
+\newcommand{\deriv}[3]{\frac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand{\me}[1]{\mathrm{e}^{#1}}%e 指数
+\newcommand{\mi}{\mathrm{i}}%虚数单位
+%\newcommand{\mc}{\mathrm{c}}%光速 定义与mathcal冲突
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+%\newcommand{\Rome}[1]{\setcounter{rome}{#1}\Roman{rome}}
+%~~~~~~~~~~~~~~~
+% 一些数学的环境设置
+%~~~~~~~~~~~~~~~
+%\newcounter{counter_exm}\setcounter{counter_exm}{1}
+%\newcounter{counter_prb}\setcounter{counter_prb}{1}
+%\newcounter{counter_thm}\setcounter{counter_thm}{1}
+%\newcounter{counter_lma}\setcounter{counter_lma}{1}
+%\newcounter{counter_dft}\setcounter{counter_dft}{1}
+%\newcounter{counter_clm}\setcounter{counter_clm}{1}
+%\newcounter{counter_cly}\setcounter{counter_cly}{1}
+%\newtheorem{theorem}{{\hskip 1.7em \bf 定理}}
+%\newtheorem{lemma}[theorem]{\hskip 1.7em 引理}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{claim}[theorem]{\hskip 1.7em 命题}
+%\newtheorem{corollary}[theorem]{\hskip 1.7em 推论}
+%\newtheorem{definition}[theorem]{\hskip 1.7em 定义}
+\newcommand{\problem}[1]{{\setlength{\parskip}{10pt}\noindent \bf{#1}}}
+\newenvironment{solution}{{\noindent\hskip 2em \bf 解 \quad}}{}
+\renewenvironment{proof}{{\setlength{\parskip}{7pt}\noindent\hskip 2em \bf 证明 \quad}}{\hfill$\qed$\par}
+%\newenvironment{example}{{\noindent\hskip 2em \bf 例 \arabic{counter_exm}\quad}}{\addtocounter{counter_exm}{1}\par}
+%\newenvironment{concept}[1]{{\bf #1\quad} \begin{kaishu}} {\end{kaishu}\par}
+
+% ----------------------------------------------------------------------
+% Header information
+% ------------------------------------------------------------------------
+
+\begin{document}
+
+\course{B0911006Y-01} 			%optional
+\coursetitle{Computer Organization and Design}	%optional
+\semester{2023 Spring}		%optional
+\lecturer{Ke Zhang}	%optional
+\scribe{吉骏雄}		%required
+\lecturenumber{2}			%required (must be a number)
+\lecturedate{March 13}	%required (omit year)
+
+\maketitle
+
+% ----------------------------------------------------------------------
+% Body of the document
+% ------------------------------------------------------------------------
+
+
+\textbf{课后习题：6.3，6.5，6.6，6.9}
+
+\problem{6.3} 设$x$为整数，$[x]_{\text{补}}=1,x_1x_2x_3x_4x_5 $, 若要求$x < -16$，试问$x_1\sim x_5$应取何值？
+
+\begin{solution}
+    如果要让数码位有$5$位的反码表示负数, 那么其表示范围为$-2^5
+    \sim -1$, 即$-32\sim -1$. 如果要求$x < -16$, 取$32$的模数后即$0\leq x_1x_2x_3x_4x_5 < 16$ 因而必须是$x_1=0$, 其他位任意.
+\end{solution}
+
+
+\problem{6.5} 已知$[x]_{\text{补}}$，求$[x]_{\text{原}}$和$x$。
+
+$[x_1]_{\text{补}}=1. 1100$, $[x_2]_{\text{补}}=1. 1001$, $[x_3]_{\text{补}}=0. 1110$, $[x_4]_{\text{补}}=1. 0000$, $[x_5]_{\text{补}}=1, 0101$, $[x_6]_{\text{补}}=1, 1100$, $[x_7]_{\text{补}}=0, 0111$, $[x_8]_{\text{补}}=1, 0000$
+
+
+\begin{solution}
+    用二进制表示所有的小数/整数$x$的值. 
+
+    $[x_1]_{\text{补}}=1. 1100$: $[x_1]_{\text{原}}=1.0100$, $x=-0.0100$
+
+    $[x_2]_{\text{补}}=1. 1001$: $[x_2]_{\text{原}}=1.0111$, $x=-0.0111$
+
+    $[x_3]_{\text{补}}=0. 1110$: $[x_3]_{\text{原}}=0.1110$, $x=+0.1110$
+
+    $[x_4]_{\text{补}}=1. 0000$: $[x_4]_{\text{原}}$不存在, $x=-1.0000$
+
+    $[x_5]_{\text{补}}=1, 0101$: $[x_5]_{\text{原}}=1,1011$, $x=-1011$
+
+    $[x_6]_{\text{补}}=1, 1100$: $[x_6]_{\text{原}}=1,0100$, $x=-0100$
+
+    $[x_7]_{\text{补}}=0, 0111$: $[x_7]_{\text{原}}=0,0111$, $x=+0111$
+
+    $[x_8]_{\text{补}}=1, 0000$: $[x_8]_{\text{原}}$不存在, $x=-10000$
+\end{solution}
+
+
+\problem{6.6} 设机器数字长为$8$位（含$1$位符号位在内），分整数和小数两种情况讨论真值$x$为何值时，$[x]_{\text{补}}=[x]_{\text{原}}$成立。
+
+\begin{solution}
+    整数: 当$x>0$ (符号位为$0$) 时, 补码和原码相等; $x=0$时, 有一个原码与补码相等, 另一个不相等. $x<0$时, 仅当$x = -64 = -2^6$时原码和补码均为$1,100\,0000$, 其他情况均不相等.
+
+    小数: 当$x>0$ (符号位为$0$) 时, 补码和原码相等; $x=0$时, 有一个原码与补码相等, 另一个不相等. $x<0$时, 仅当$x = -\frac{1}{2} = -2^{-1}$时原码和补码均为$1.100\,0000$, 其他情况均不相等.
+\end{solution}
+
+
+\problem{6.9} 当十六进制数$9BH$和$FFH$分别表示为原码、补码、反码、移码和无符号数时，所对应的十进制数各为多少（设机器数采用$1$位符号位）？
+
+\begin{solution}
+    二进制数: $9BH$代表$1,001\,1011$, $FFH$代表$1,111\,1111$.
+
+    原码: $98H$代表$-27$, $FFH$代表$-127$.
+    
+    补码: $98H$代表$-100$, $FFH$代表$-1$.
+    
+    反码: $98H$代表$-100$, $FFH$代表$-0$.
+    
+    移码: $98H$代表$+27$, $FFH$代表$+127$.
+    
+    无符号数: $98H$代表$+155$, $FFH$代表$+255$.
+\end{solution}
+
+
+
+
+
+
+
+\end{document}

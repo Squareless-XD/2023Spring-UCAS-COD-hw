@@ -1,0 +1,365 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[UTF8]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{adjustbox}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsmath,amsfonts,amssymb,bm,amsthm} % 数学宏包、数学字体、数学符号、支持 \mathscr{} 字体、支持粗斜体 \bm{}、数学定理
+\usepackage{bigstrut,multirow,rotating} % Excel表格自动导入latex
+\usepackage{booktabs}
+\usepackage{breqn}
+\usepackage{caption}
+\usepackage{color} % 支持颜色改变
+\usepackage{ctex}
+\usepackage{enumitem} % 自定义列表环境
+\usepackage{esint} % 支持多种积分算子
+\usepackage{extarrows} % 任意长度的箭头
+\usepackage{fancyhdr}
+\usepackage{fontsize}
+\usepackage{fontspec}
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry}
+\usepackage{graphicx} % 支持 \includegraphics{} 插图
+\usepackage{mathrsfs}
+\usepackage{mathtools} % 数学宏包的重要补充
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{nicefrac}
+\usepackage{scribe}
+\usepackage{subfigure} % 插入子图
+\usepackage{tikz,xcolor} % 画图、画 Feynman 图
+\usepackage{upgreek} % 数学环境的直立希腊字母
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%~~~~~~~~~~~~~~~
+% Utility latin
+%~~~~~~~~~~~~~~~
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\newcommand{\balign}[1]{\ealign{\begin{align}#1\end{align}}}
+\newcommand{\baligns}[1]{\ealigns{\begin{align*}#1\end{align*}}}
+\newcommand{\bitemize}[1]{\eitemize{\begin{itemize}#1\end{itemize}}}
+\newcommand{\benumerate}[1]{\eenumerate{\begin{enumerate}#1\end{enumerate}}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad}
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbi}[1]{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\tsc}[1]{\textsc{#1}}
+% \def\<{{\langle}}
+% \def\>{{\rangle}}
+\newcommand{\sT}{\sf T}
+\newcommand{\grad}{\nabla}
+\newcommand{\Proj}{\Pi}
+%~~~~~~~~~~~~~~~
+% Common sets 定义数集符号
+%~~~~~~~~~~~~~~~
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}} % Real number symbol
+\newcommand{\integers}{\mathbb{Z}} % Integer symbol
+\newcommand{\rationals}{\mathbb{Q}} % Rational numbers
+\newcommand{\naturals}{\mathbb{N}} % Natural numbers
+\newcommand{\complex}{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\newcommand{\indic}[1]{\mbb{I}\left(#1\right)} % Indicator function
+\newcommand{\indicsub}[2]{\mbb{I}_{#2}\left(#1\right)} % Indicator function
+\newcommand{\argmax}{\mathop\mathrm{arg\, max}} % Defining math symbols
+\newcommand{\argmin}{\mathop\mathrm{arg\, min}}
+\renewcommand{\arccos}{\mathop\mathrm{arccos}}
+\newcommand{\dom}{\mathop\mathrm{dom}} % Domain
+\newcommand{\range}{\mathop\mathrm{range}} % Range
+\newcommand{\diag}{\mathop\mathrm{diag}}
+\newcommand{\tr}{\mathop\mathrm{tr}}
+\newcommand{\abs}{\mathop\mathrm{abs}}
+\newcommand{\card}{\mathop\mathrm{card}}
+\newcommand{\sign}{\mathop\mathrm{sign}}
+\newcommand{\prox}{\mathrm{prox}} % prox
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\newcommand{\E}{\mathbb{E}} % Expectation symbol
+\newcommand{\Earg}[1]{\E\left[#1\right]}
+\newcommand{\Esubarg}[2]{\E_{#1}\left[#2\right]}
+\renewcommand{\P}{\mathbb{P}} % Probability symbol
+\newcommand{\Parg}[1]{\P\left(#1\right)}
+\newcommand{\Psubarg}[2]{\P_{#1}\left[#2\right]}
+% \newcommand{\Cov}{\mrm{Cov}} % Covariance symbol
+% \newcommand{\Covarg}[1]{\Cov\left[#1\right]}
+% \newcommand{\Covsubarg}[2]{\Cov_{#1}\left[#2\right]}
+% \newcommand{\model}{\mathcal{P}} % probability family / statistical model
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+% \newcommand{\Gsn}{\mathcal{N}}
+% \newcommand{\Ber}{\textnormal{Ber}}
+% \newcommand{\Bin}{\textnormal{Bin}}
+% \newcommand{\Unif}{\textnormal{Unif}}
+% \newcommand{\Mult}{\textnormal{Mult}}
+% \newcommand{\NegMult}{\textnormal{NegMult}}
+% \newcommand{\Dir}{\textnormal{Dir}}
+% \newcommand{\Bet}{\textnormal{Beta}}
+% \newcommand{\Gam}{\textnormal{Gamma}}
+% \newcommand{\Poi}{\textnormal{Poi}}
+% \newcommand{\HypGeo}{\textnormal{HypGeo}}
+% \newcommand{\GEM}{\textnormal{GEM}}
+% \newcommand{\BP}{\textnormal{BP}}
+% \newcommand{\DP}{\textnormal{DP}}
+% \newcommand{\BeP}{\textnormal{BeP}}
+% \newcommand{\Exp}{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}
+% \newtheorem{example}{Example}
+% \newtheorem{problem}{Problem}
+% \newtheorem{lemma}{Lemma}
+%~~~~~~~~~~~~~~~
+% 组合数学的模板和作业里用到的一些宏包和自定义命令
+%~~~~~~~~~~~~~~~
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+\newcommand{\falfac}[1]{^{\underline{#1}}}
+\newcommand{\binomfrac}[2]{\frac{#1^{\underline{#2}}}{#2!}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\suminfty}[2]{\sum_{#1=#2}^{\infty}}
+\newcommand{\suminftyk}[0]{\sum_{k=0}^{\infty}}
+\newcommand{\sumint}[3]{\sum_{#1=#2}^{#3}}
+\newcommand{\sumintk}[2]{\sum_{k=#1}^{#2}}
+\newcommand{\suminti}[2]{\sum_{i=#1}^{#2}}
+%~~~~~~~~~~~~~~~
+% 定义新命令
+%~~~~~~~~~~~~~~~
+\newcommand*{\unit}[1]{\mathop{}\!\mathrm{#1}}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}%微分算子 d
+\newcommand*{\pdif}{\mathop{}\!\partial}%偏微分算子
+\newcommand*{\cdif}{\mathop{}\!\nabla}%协变导数、nabla 算子
+\newcommand*{\laplace}{\mathop{}\!\Delta}%laplace 算子
+\newcommand*{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\derivh}[3]{\frac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\pderiv}[2]{\frac{\partial #1}{\partial {#2}}}
+\newcommand*{\pderivh}[3]{\frac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand*{\dderiv}[2]{\dfrac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\dderivh}[3]{\dfrac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\dpderiv}[2]{\dfrac{\partial #1}{\partial {#2}}}
+\newcommand*{\dpderivh}[3]{\dfrac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand{\me}[1]{\mathrm{e}^{#1}}%e 指数
+\newcommand{\mi}{\mathrm{i}}%虚数单位
+% \newcommand{\mc}{\mathrm{c}}%光速 定义与mathcal冲突
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+% \newcommand{\Rome}[1]{\setcounter{rome}{#1}\Roman{rome}}
+%~~~~~~~~~~~~~~~
+% 公式环境中箭头符号的简写
+%~~~~~~~~~~~~~~~
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\lgla}{\longleftarrow}
+\newcommand{\Lgla}{\Longleftarrow}
+\newcommand{\lgra}{\longrightarrow}
+\newcommand{\Lgra}{\Longrightarrow}
+\newcommand{\lglra}{\longleftrightarrow}
+\newcommand{\Lglra}{\Longleftrightarrow}
+%~~~~~~~~~~~~~~~
+% 一些数学的环境设置
+%~~~~~~~~~~~~~~~
+% \newcounter{counter_exm}\setcounter{counter_exm}{1}
+% \newcounter{counter_prb}\setcounter{counter_prb}{1}
+% \newcounter{counter_thm}\setcounter{counter_thm}{1}
+% \newcounter{counter_lma}\setcounter{counter_lma}{1}
+% \newcounter{counter_dft}\setcounter{counter_dft}{1}
+% \newcounter{counter_clm}\setcounter{counter_clm}{1}
+% \newcounter{counter_cly}\setcounter{counter_cly}{1}
+% \newtheorem{theorem}{{\hskip 1.7em \bf 定理}}
+% \newtheorem{lemma}[theorem]{\hskip 1.7em 引理}
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{claim}[theorem]{\hskip 1.7em 命题}
+% \newtheorem{corollary}[theorem]{\hskip 1.7em 推论}
+% \newtheorem{definition}[theorem]{\hskip 1.7em 定义}
+\newcommand{\problem}[1]{{\setlength{\parskip}{10pt}\noindent \bf{#1}}}
+\newenvironment{solution}{{\noindent\hskip 2em \bf 解 \quad}}{}
+\renewenvironment{proof}{{\setlength{\parskip}{7pt}\noindent\hskip 2em \bf 证明 \quad}}{\hfill$\qed$\par}
+% \newenvironment{example}{{\noindent\hskip 2em \bf 例 \arabic{counter_exm}\quad}}{\addtocounter{counter_exm}{1}\par}
+% \newenvironment{concept}[1]{{\bf #1\quad} \begin{kaishu}} {\end{kaishu}\par}
+%~~~~~~~~~~~~~~~
+% 本.tex文档中特殊定义命令
+%~~~~~~~~~~~~~~~
+\newcommand{\cdclass}[2]{[#1]_{\text{#2}}}
+
+% ----------------------------------------------------------------------
+% Header information
+% ------------------------------------------------------------------------
+
+\begin{document}
+
+\course{B0911006Y-01} 			%optional
+\coursetitle{Computer Organization and Design}	%optional
+\semester{2023 Spring}		%optional
+\lecturer{Ke Zhang}	%optional
+\scribe{吉骏雄}		%required
+\lecturenumber{13}			%required (must be a number)
+\lecturedate{June 21}	%required (omit year)
+
+\maketitle
+
+% ----------------------------------------------------------------------
+% Body of the document
+% ------------------------------------------------------------------------
+
+
+\textbf{《计算机组成原理》 (唐朔飞版) 课后习题4.28, 4.29, 4.32, 4.38, 4.39}
+
+\problem{4.28} 设主存容量为256K字, Cache容量为2K字, 块长为4.
+\begin{enumerate}[label=(\arabic*)]
+    \item 设计Cache地址格式,  Cache 中可装入多少块数据? 
+    \item 在直接映射方式下, 设计主存地址格式. 
+    \item 在四路组相联映射方式下, 设计主存地址格式. 
+    \item 在全相联映射方式下, 设计主存地址格式. 
+    \item 若存储字长为$32$位, 存储器按字节寻址, 写出上述三种映射方式下主存的地址格式. 
+\end{enumerate}
+
+\begin{solution}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Cache一共有$2\mrm{K} = 2^{11}$个字, 块长为$4 = 2^2$, 需要$2$位地址编号, 剩余的$11-2=9$位用于标记, 共有$2^9 = 512$个块. 地址格式为前$9$位标记, 后$2$位块内地址.
+        \item 主存地址的字长为$\log{256\mrm{K}} = \log{2^{18}} = 18$, 因此除了$9$位CaChe块地址和$2$位块内地址外, 还有$18-11=7$位主存内字块标记. 直接映射方式下, 主存地址格式为前$7$位主存内字块标记, 中间$9$位CaChe块地址, 后$2$位块内地址.
+        \item 四路组相联映射方式下, 因为有4个块被放至同一集合的不同路中, 组地址比直接映射少了两个地址字长, 因此主存地址格式为前$9$位主存内字块标记, 中间$7$位组地址, 后$2$位块内地址.
+        \item 全相联映射方式下, 因为每个块都可以放在任意一路中, 因此主存地址格式为前$16$位主存内字块标记, 后$2$位块内地址.
+        \item 存储字长$32 = 8 \times 4$, 因此一个存储字长需要另外的$\log{4} = 2$个字节来编址. 于是三种结果分别如下:
+        
+        直接映射方式下, 主存地址格式为前$7$位主存内字块标记, 中间$9$位CaChe块地址, 后$4$位块内地址.
+
+        四路组相联映射方式下, 主存地址格式为前$9$位主存内字块标记, 中间$7$位组地址, 后$4$位块内地址.
+
+        全相联映射方式下, 主存地址格式为前$16$位主存内字块标记, 后$4$位块内地址.
+    \end{enumerate}
+\end{solution}
+    
+
+\problem{4.29} 假设CPU执行某段程序时共访问Cache命中4800次, 访问主存200次, 已知Cache的存取周期是30ns, 主存的存取周期是150ns, 求Cache的命中率以及Cache-主存系统的平均访问时间和效率, 试问该系统的性能提高了多少?
+
+\begin{solution}
+
+    Cache的命中率为$\frac{4800}{4800+200} \times 100\% = 96\%$.
+    
+    Cache-主存系统的平均访问时间为$96\% \times 30 + 4\% \times 150 = 34.8\unit{ns}$.
+    
+    Cache-主存系统的效率为$\frac{30}{34.8} \times 100\% = 86.2\%$.
+    
+    如果没有Cache, 平均访问时间为$150\unit{ns}$.
+
+    因此该系统的性能提高了$\frac{150}{34.8} - 1 = 3.31$倍.
+\end{solution}
+
+
+\problem{4.32} 设某机主存容量为4MB, Cache容量为16KB, 每字块有8个字, 每字32位, 设计一个四路组相联映射 (即Cache每组内共有4个字块) 的Cache组织.
+\begin{enumerate}[label=(\arabic*)]
+    \item 画出主存地址字段中各段的位数.
+    \item 设Cache的初态为空, CPU依次从主存第0, 1, 2, …, 89号单元读出90个字 (主存一次读出一个字) , 并重复按此次序读8次, 间命中率是多少?
+    \item 若Cache的速度是主存的6倍, 试问有Cache和无Cache相比, 速度约提高多少倍?
+\end{enumerate}
+
+\begin{solution}
+    \begin{enumerate}[label=(\arabic*)]
+        \item 由于Cache的容量为16KB, 每字块有8个字, 每字32位, 另有$4$路组相联结构, 因此Cache共有$\log 16\mrm{K} - \log 8 - \log \frac{32}{8} - \log{4} = 14-3-2-2 = 7$个字块, 需要$7$位组地址编号, $5$位块内地址编号, 剩余的$22-7-5=10$位用于标记. 主存地址格式为前$10$位主存块标志, 中间$7$位组地址, 后$5$位块内地址.
+
+        \begin{table}[htbp]
+            \centering
+            \caption{主存地址字段中各段的位数}
+            \begin{tabular}{|c|c|c|}
+                \hline
+                主存块标志 & 组地址 & 块内地址 \bigstrut[t]\\
+                10位 & 7位 & 5位 \bigstrut[b]\\
+                \hline
+            \end{tabular}%
+            % \label{tab:addlabel}%
+        \end{table}%
+
+        \item Cache的块地址一共有$7$位, 因此一共有$2^7 = 128$个块, 这些块足够把连续的$90$个字存入. 对于第$0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88$个字的读取时, Cache需要每次从主存中获取$8$个单元(字)的数据, 而其他时候都能保证Cache命中 (包括后续的重复读取, 因为并没有出现需要驱逐Cache数据的情况). 因此Cache的命中率为$\frac{8 \times 90-12}{8 \times 90} \times 100\% = \frac{59}{60} = 98.33\%$.
+        
+        \item 若Cache的速度是主存的6倍, 试问有Cache和无Cache相比, 速度约提高多少倍?
+        
+        有Cache的平均读取时间: $\frac{59}{60} \times t + \frac{1}{60} \times 6t = \frac{13}{12} t = 1.083 t \unit{ns}$.
+
+        无Cache的平均读取时间: $6t \unit{ns}$.
+
+        速度提高的倍数: $\frac{6}{\frac{13}{12}} - 1 = 4.538$倍.
+    \end{enumerate}
+\end{solution}
+
+
+\problem{4.38} 磁盘组有6片磁盘, 最外两侧盘面可以记录, 存储区域内径22cm, 外径33cm, 道密度为40道/cm, 内层密度为400位/cm, 转速3600r/min.
+\begin{enumerate}[label=(\arabic*)]
+    \item 共有多少存储面可用?
+    \item 共有多少柱面?
+    \item 盘组总存储容量是多少?
+    \item 数据传输率是多少?
+\end{enumerate}
+
+\begin{solution}
+    \begin{enumerate}[label=(\arabic*)]
+        \item 因为题目说最外两侧盘面可以记录, 因此共有$6 \times 2 = 12$个盘面可用.
+        \item 盘面的道密度为$40\unit{\text{道}/cm}$, 由于内径/外径两个直径之间的差值包含同一条磁道两次, 所以有效长度为$\frac{33-22}{2} = 5.5\unit{cm}$, 因此每个盘面共有$5.5 \times 40 = 220$道, 因此也有$220$个柱面.
+        \item 每个盘面的内层密度为$400\unit{\text{位}/cm}$, 内层磁道周长为$\pi \times 22 = 69.12 \unit{cm}$, 因此每个磁道的容量为$69.12 \times 400 = 27648\unit{位}$, 因此盘组总存储容量为$27648 \times 12 \times 220 = 72990720 \unit{位} = 9123840\mrm{B}$.
+        \item 数据传输率为$\frac{3600}{60} \times 27648 = 1658880 \unit{\text{位}/s} = 207360 \unit{B/s} = 202.5 \unit{KB/s}$.
+    \end{enumerate}
+\end{solution}
+
+
+\problem{4.39} 某磁盘存储器转速为3000r/min, 共有4个记录盘面, 每毫米5道, 每道记录信息12288字节, 最小磁道直径为230mm, 共有275道, 求:
+\begin{enumerate}[label=(\arabic*)]
+    \item 磁盘存储器的存储容量.
+    \item 最高位密度 (最小磁道的位密度) 和最低位密度.
+    \item 磁盘数据传输率.
+    \item 平均等待时间.
+\end{enumerate}
+
+\begin{solution}
+    \begin{enumerate}[label=(\arabic*)]
+        \item 磁盘存储器的存储容量为$4 \times 275 \times 12288 = 13516800 \unit{B} = 13200 \unit{KB} \approx 12.89 \unit{MB}$.
+        \item 有效长度为$\frac{275}{5} = 55 \unit{mm}$, 因此外径为$230 + 55 \times 2 = 340 \unit{mm}$.
+        
+        最高位密度为$\frac{12288 \times 8}{\pi \times 340} \approx 92.033 \unit{位}/\unit{mm}$.
+        
+        最低位密度为$\frac{12288 \times 8}{\pi \times 230} \approx 136.048 \unit{位}/\unit{mm}$.
+        \item 数据传输率为$\frac{3000}{60}  \times 12288 = 614400 \unit{B/\text{min}} = 600 \unit{KB/\text{min}}$.
+        \item 平均等待时间为$\frac{1}{2} \times \frac{1}{3000} \times 60 = 0.01 \unit{s} = 10 \unit{ms}$.
+    \end{enumerate}
+\end{solution}
+
+
+
+
+
+
+
+
+\end{document}
